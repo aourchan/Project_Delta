@@ -1,0 +1,5 @@
+LaTeX generated documents for homework sets
+	http://www.texample.net/weblog/2008/oct/24/embedding-python-latex/
+SymPy for Python solver
+	http://www.sympy.org/en/index.html
+2(x+3)=5x-2. 2(x+3)+5=5x-3. Have print statements stored as strings then just random passed in. (Choose one from : Good job, excellent work ...)
