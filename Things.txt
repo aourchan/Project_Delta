@@ -3,3 +3,18 @@ LaTeX generated documents for homework sets
 SymPy for Python solver
 	http://www.sympy.org/en/index.html
 2(x+3)=5x-2. 2(x+3)+5=5x-3. Have print statements stored as strings then just random passed in. (Choose one from : Good job, excellent work ...)
+
+Need to start keeping track of whether the user got the answer correct or not.
+	We will return a number saying whether the user's answer was:
+		1. correct (full credit)
+		2. common mistake (get some partial credit)
+		3. wrong (no credit)
+	In global function we will keep track of how many of each problem set the user has gotten correct
+	and how many question of each problem set have been asked.
+	Eventually we want to calculate a score based on how the user is doing
+
+Make it so on distributive problems we do not have a front coefficient of 1
+
+Last problem set should have fractional coefficients and also possibility of whole number fractions
+
+Make it so if user inputs non int then it doesn't ruin the rest of the run.
