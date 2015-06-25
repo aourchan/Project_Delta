@@ -3,9 +3,22 @@
 	After a certain number of questions the function will prompt the user 
 	to see if they would like more questions."""
 
+from generate_problem import *
 
-from Problem_Generator import *
-
+def print_user_score():
+	print 'Your current score on each problem set is:'
+	print 'Problem Set 1: %d correct out of %d questions' % (problem_set_1_total, problem_set_1_count)
+	print 'Problem Set 2: %d correct out of %d questions' % (problem_set_2_total, problem_set_2_count)
+	print 'Problem Set 3: %d correct out of %d questions' % (problem_set_3_total, problem_set_3_count)
+	print 'Problem Set 4: %d correct out of %d questions' % (problem_set_4_total, problem_set_4_count)
+	print 'Problem Set 5: %d correct out of %d questions' % (problem_set_5_total, problem_set_5_count)
+	print 'Problem Set 6: %d correct out of %d questions' % (problem_set_6_total, problem_set_6_count)
+	print 'Your total score is %d out of %d possible' % (user_score, number_of_questions * 10)
+	
+def quit():
+	print "Quitting practice problems."
+	print_user_score()
+	exit()
 
 problem_set_1_total = 0		# Initial score of user on problem_set_1
 problem_set_2_total = 0		# Initial score of user on problem_set_2
@@ -26,6 +39,7 @@ count = 1					# Counter of what number question user is on
 temp_score = 0				# Temporarily stores the score on the latest user problem
 
 print 'We are going to start off with %s questions and we will go from there. Good luck!' % number_of_questions
+print 'Feel free to type [q] at any time to quit.'
 while keep_going:
 	if count == 1:
 		temp_score = problem_set_1()
@@ -102,20 +116,12 @@ while keep_going:
 				problem_set_1_total = problem_set_1_total + 1
 			user_score = 10 * temp_score + user_score
 			problem_set_1_count = problem_set_1_count + 1
-	if count == number_of_questions:
-		print 'Your current score on each problem set is:'
-		print 'Problem Set 1: %d correct out of %d questions' % (problem_set_1_total, problem_set_1_count)
-		print 'Problem Set 2: %d correct out of %d questions' % (problem_set_2_total, problem_set_2_count)
-		print 'Problem Set 3: %d correct out of %d questions' % (problem_set_3_total, problem_set_3_count)
-		print 'Problem Set 4: %d correct out of %d questions' % (problem_set_4_total, problem_set_4_count)
-		print 'Problem Set 5: %d correct out of %d questions' % (problem_set_5_total, problem_set_5_count)
-		print 'Problem Set 6: %d correct out of %d questions' % (problem_set_6_total, problem_set_6_count)
-		print 'Your total score is %d out of %d possible' % (user_score, number_of_questions * 10)
+	if count >= number_of_questions:
+		print_user_score()
 		print 'Would you like some more practice problems? Enter how many questions you would like.'
-		user_answer = raw_input('-> ')
-		if user_answer.isdigit() and user_answer != '0':
+		user_answer = user_response()
+		if user_answer != 0:
 			number_of_questions = number_of_questions + int(user_answer)
 		else:
 			keep_going = False
 	count = count + 1
-	

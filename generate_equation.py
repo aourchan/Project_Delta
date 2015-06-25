@@ -1,6 +1,5 @@
 """ This formats the equation that will be displayed to the user """
 
-
 def generate_equation(problem_set, coefficients = [0], constants = [0]):
 	# First we determine the sign of each coefficient and constant
 	coeff_signs = ['']*len(coefficients)

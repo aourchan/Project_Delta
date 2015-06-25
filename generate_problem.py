@@ -1,13 +1,11 @@
-"""This function generates problems from specified problem sets."""
-
+""" This function generates problems from specified problem sets."""
 
 from random import randrange
 from feedback import *
 from generate_equation import generate_equation
-
+from user_response import *
 
 # Global variables
-Prompt = "Your Answer-> "	# Prompt that will be ask user for their response
 correct_score = 1			# Value of getting a correct answer
 common_mis_score = 0.5		# Value of getting a common mistake answer
 incorrect_score = 0			# Value of getting an incorrect answer
@@ -30,7 +28,7 @@ def problem_set_1():
  
 	# Now we print the problem to the user and prompt the user for a response
 	generate_equation(problem_set, coefficients, constants)
-	user_answer = int(raw_input(Prompt))
+	user_answer = user_response()
  
 	# Check user answer and provide feedback
 	if user_answer == correct_answer:
@@ -57,6 +55,8 @@ def problem_set_2():
 	
 	# Now we derive the x coefficient
 	coeff_lhs = randrange(-8, 9)
+	while coeff_lhs == 0:
+		coeff_lhs = randrange(-8, 9)
 	coefficients = [coeff_lhs]
 	
 	# Next we derive the constants on each side of the equation.
@@ -69,7 +69,7 @@ def problem_set_2():
 	
 	# Now we print the problem to the user and prompt the user for a response
 	generate_equation(problem_set, coefficients, constants)
-	user_answer = int(raw_input(Prompt))
+	user_answer = user_response()
 	 
 	# Check user answer and provide feedback
 	if user_answer == correct_answer:
@@ -117,21 +117,32 @@ def problem_set_3():
 
 	# Now we print the problem to the user and prompt the user for a response
 	generate_equation(problem_set, coefficients, constants)
-	user_answer = int(raw_input(Prompt))
+	user_answer = user_response()
 	 
-	# Check user answer and provide feedback
-	if user_answer == correct_answer:
-		correct_feedback()
-		return correct_score
-	elif (user_answer == (const_rhs + const_lhs) / (coeff_lhs - coeff_rhs)) or \
-		 (user_answer == (const_rhs + const_lhs) / (coeff_lhs + coeff_rhs)) or \
-		 (user_answer == (const_rhs - const_lhs) / (coeff_lhs + coeff_rhs)) or \
-		 (user_answer == -correct_answer):
-		common_mistake_feedback(user_answer, correct_answer)
-		return common_mis_score
-	else:
-		incorrect_feedback(user_answer, correct_answer)
-		return incorrect_score
+	# Check user answer and provide feedback, we use try/except to ensure there is no zero division error
+	try:
+		if user_answer == correct_answer:
+			correct_feedback()
+			return correct_score
+		elif (user_answer == (const_rhs + const_lhs) / (coeff_lhs - coeff_rhs)) or \
+			 (user_answer == (const_rhs + const_lhs) / (coeff_lhs + coeff_rhs)) or \
+			 (user_answer == (const_rhs - const_lhs) / (coeff_lhs + coeff_rhs)) or \
+			 (user_answer == -correct_answer):
+			common_mistake_feedback(user_answer, correct_answer)
+			return common_mis_score
+		else:
+			incorrect_feedback(user_answer, correct_answer)
+			return incorrect_score
+	except ZeroDivisionError:
+		if user_answer == correct_answer:
+			correct_feedback()
+			return correct_score
+		elif user_answer == -correct_answer:
+			common_mistake_feedback(user_answer, correct_answer)
+			return common_mis_score
+		else:
+			incorrect_feedback(user_answer, correct_answer)
+			return incorrect_score
 
 # problem_set_4: a*x + b + c*x = d + e*x + f
 # coeff_1 = a, coeff_2 = c, coeff_3 = e
@@ -170,19 +181,30 @@ def problem_set_4():
 	
 	# Now we print the problem to the user and prompt the user for a response
 	generate_equation(problem_set, coefficients, constants)
-	user_answer = int(raw_input(Prompt))
+	user_answer = user_response()
 	
-	# Check user answer and provide feedback
-	if user_answer == correct_answer:
-		correct_feedback()
-		return correct_score
-	elif (user_answer == (const_1 + const_2 + const_3) / (coeff_1 + coeff_2 + coeff_3)) or \
-		(user_answer == -correct_answer):
-		common_mistake_feedback(user_answer, correct_answer)
-		return common_mis_score
-	else:
-		incorrect_feedback(user_answer, correct_answer)
-		return incorrect_score
+	# Check user answer and provide feedback, we use try/except to ensure there is no zero division error
+	try:
+		if user_answer == correct_answer:
+			correct_feedback()
+			return correct_score
+		elif (user_answer == (const_1 + const_2 + const_3) / (coeff_1 + coeff_2 + coeff_3)) or \
+			(user_answer == -correct_answer):
+			common_mistake_feedback(user_answer, correct_answer)
+			return common_mis_score
+		else:
+			incorrect_feedback(user_answer, correct_answer)
+			return incorrect_score
+	except ZeroDivisionError:
+		if user_answer == correct_answer:
+			correct_feedback()
+			return correct_score
+		elif user_answer == -correct_answer:
+			common_mistake_feedback(user_answer, correct_answer)
+			return common_mis_score
+		else:
+			incorrect_feedback(user_answer, correct_answer)
+			return incorrect_score
 
 # problem_set_5: a(x + b) = c*x + d
 # coeff_lhs = a, coeff_rhs = c
@@ -202,7 +224,7 @@ def problem_set_5():
 	while coefficient_total == 0:
 		coefficient_total = randrange(-8, 9)
 	coeff_lhs = randrange(-8, 9)
-	while coeff_lhs == 0 or ((coeff_lhs - coefficient_total) == 0):
+	while coeff_lhs == 0 or coeff_lhs == 1 or ((coeff_lhs - coefficient_total) == 0):
 		coeff_lhs = randrange(-8, 9)
 	coeff_rhs = coeff_lhs - coefficient_total
 	coefficients = [coeff_lhs, coeff_rhs]
@@ -217,20 +239,31 @@ def problem_set_5():
 	
 	# Now we print the problem to the user and prompt the user for a response
 	generate_equation(problem_set, coefficients, constants)
-	user_answer = int(raw_input(Prompt))
+	user_answer = user_response()
 	
-	# Check user answer and provide feedback
-	if user_answer == correct_answer:
-		correct_feedback()
-		return correct_score
-	elif (user_answer == (const_rhs + coeff_lhs * const_lhs) / (coeff_lhs - coeff_rhs)) or \
-		(user_answer == (const_rhs - coeff_lhs * const_lhs) / (coeff_lhs + coeff_rhs)) or \
-		(user_answer == -correct_answer):
-		common_mistake_feedback(user_answer, correct_answer)
-		return common_mis_score
-	else:
-		incorrect_feedback(user_answer, correct_answer)
-		return incorrect_score
+	# Check user answer and provide feedback, we use try/except to ensure there is no zero division error
+	try:
+		if user_answer == correct_answer:
+			correct_feedback()
+			return correct_score
+		elif (user_answer == (const_rhs + coeff_lhs * const_lhs) / (coeff_lhs - coeff_rhs)) or \
+			(user_answer == (const_rhs - coeff_lhs * const_lhs) / (coeff_lhs + coeff_rhs)) or \
+			(user_answer == -correct_answer):
+			common_mistake_feedback(user_answer, correct_answer)
+			return common_mis_score
+		else:
+			incorrect_feedback(user_answer, correct_answer)
+			return incorrect_score
+	except ZeroDivisionError:
+		if user_answer == correct_answer:
+			correct_feedback()
+			return correct_score
+		elif user_answer == -correct_answer:
+			common_mistake_feedback(user_answer, correct_answer)
+			return common_mis_score
+		else:
+			incorrect_feedback(user_answer, correct_answer)
+			return incorrect_score
 
 # problem_set_6: a(x + b) + c = x(d + e) + f
 # coeff_1 = a, coeff_2 = d, coeff_3 = e
@@ -251,7 +284,8 @@ def problem_set_6():
 		coefficient_total = randrange(-8, 9)
 	coeff_1 = randrange(-8, 9)
 	coeff_2 = randrange(-8, 9)
-	while coeff_1 == 0 or coeff_2 == 0 or ((coeff_1 - coeff_2 - coefficient_total) == 0):
+	while coeff_1 == 0 or coeff_1 == 1 or coeff_2 == 0 or \
+		((coeff_1 - coeff_2 - coefficient_total) == 0):
 		coeff_1 = randrange(-8, 9)
 		coeff_2 = randrange(-8, 9)
 	coeff_3 = coeff_1 - coeff_2 - coefficient_total
@@ -269,16 +303,27 @@ def problem_set_6():
 	
 	# Now we print the problem to the user and prompt the user for a response
 	generate_equation(problem_set, coefficients, constants)
-	user_answer = int(raw_input(Prompt))
+	user_answer = user_response()
 	
-	# Check user answer and provide feedback
-	if user_answer == correct_answer:
-		correct_feedback()
-		return correct_score
-	elif (user_answer == (const_1 + const_2 + const_3) / (coeff_1 + coeff_2 + coeff_3)) or \
-		(user_answer == -correct_answer):
-		common_mistake_feedback(user_answer, correct_answer)
-		return common_mis_score
-	else:
-		incorrect_feedback(user_answer, correct_answer)
-		return incorrect_score
+	# Check user answer and provide feedback, we use try/except to ensure there is no zero division error
+	try:
+		if user_answer == correct_answer:
+			correct_feedback()
+			return correct_score
+		elif (user_answer == (const_1 + const_2 + const_3) / (coeff_1 + coeff_2 + coeff_3)) or \
+			(user_answer == -correct_answer):
+			common_mistake_feedback(user_answer, correct_answer)
+			return common_mis_score
+		else:
+			incorrect_feedback(user_answer, correct_answer)
+			return incorrect_score
+	except ZeroDivisionError:
+		if user_answer == correct_answer:
+			correct_feedback()
+			return correct_score
+		elif user_answer == -correct_answer:
+			common_mistake_feedback(user_answer, correct_answer)
+			return common_mis_score
+		else:
+			incorrect_feedback(user_answer, correct_answer)
+			return incorrect_score
